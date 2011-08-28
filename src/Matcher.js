@@ -1,6 +1,11 @@
 function Matcher(regularExpression) {
   this.regularExpression = regularExpression;
   this.counters = new Array();
+  if (arguments.length > 1){
+    for (var i = 1; i < arguments.length; i++){
+      this.counters.push(arguments[i]);
+    }
+  }
 }
 
 Matcher.prototype.parse = function(string) {

@@ -5,6 +5,21 @@ describe("Matcher", function() {
     matcher = new Matcher(/some_expression/);
   });
 
+  describe("constructor", function(){
+    it("stores the first argument as regular expression", function(){
+      regularExpression = jasmine.createSpy();
+      var matcher = new Matcher(regularExpression);
+      expect(matcher.regularExpression).toEqual(regularExpression);
+    });
+    it("puts second and more arguments into the counters array", function(){
+      var spyOne = jasmine.createSpy();
+      var spyTwo = jasmine.createSpy();
+      var matcher = new Matcher(/./, spyOne, spyTwo);
+      expect(matcher.counters[0]).toEqual(spyOne);
+      expect(matcher.counters[1]).toEqual(spyTwo);
+    });
+  });
+
   describe("regularExpression", function(){
     it("is passed as a first constructor parameter", function(){
       var regularExpression = /some_expression/;
