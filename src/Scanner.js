@@ -1,4 +1,4 @@
-function Matcher(regularExpression) {
+function Scanner(regularExpression) {
   this.regularExpression = regularExpression;
   this.counters = new Array();
   if (arguments.length > 1){
@@ -8,7 +8,7 @@ function Matcher(regularExpression) {
   }
 }
 
-Matcher.prototype.parse = function(string) {
+Scanner.prototype.parse = function(string) {
   var that = this;
   var matches = this.regularExpression.exec(string);
   matches && matches.forEach(function(match){
