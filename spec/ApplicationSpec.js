@@ -1,13 +1,15 @@
 describe("Application", function(){
   describe("creating new parser", function(){
     it("allows standard application flow", function(){
-      parser = new Parser();
+      var parser = new Parser();
 
-      wordScanner = new Scanner(/\w/, new Counter());
-      wordNotifier = new WordNotifier(wordScanner);
+      var wordScanner = new Scanner(/\w/);
 
-      parser.scanners.push( wordScanner);
-      parser.notifiers.push( new WordNotifier(wordScanner) );
+      var wordCounter = new Counter();
+      wordScanner.counters.push(wordCounter);
+
+      var wordNotifier = new WordNotifier();
+      wordCounter.notifiers.push(wordNotifier);
 
       expect(parser.notifications.length).toEqual(0);
 

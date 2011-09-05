@@ -1,8 +1,12 @@
 function Counter(){
   this.result = 0;
+  this.name = 'counter';
+  this.notifiers = new Array();
 };
 Counter.prototype.callback = function(){
   this.result++;
+};
+Counter.prototype.callNotifiers = function(){
 };
 
 function MatchLettersCounter(){

@@ -3,7 +3,7 @@ parser = new Parser();
 wordScanner = new Scanner(/\w/, new Counter());
 wordNotifier = new WordNotifier(wordScanner);
 
-parser.scanners.push( wordScanner);
+parser.matchers.push( wordScanner);
 parser.notifiers.push( new WordNotifier(wordScanner) );
 
 var onLoad = function(){
