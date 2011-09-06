@@ -3,13 +3,17 @@ describe("Application", function(){
     it("allows standard application flow", function(){
       var parser = new Parser();
 
-      var wordScanner = new Scanner(/\w/);
 
-      var wordCounter = new Counter();
-      wordScanner.counters.push(wordCounter);
+      var wordScanner = new Scanner(/\w/, 'word');
+      var wordCounter = new Counter(wordScanner);
 
-      var wordNotifier = new WordNotifier();
-      wordCounter.notifiers.push(wordNotifier);
+      function WordNotifier(){};
+      WordNotifier.prototype = new Notifier(wordCounter);
+      WordNotifier.prototype.evaluate = function(){
+        if (this.dataTree.word.counter > 180){
+          parser.notifications.push('something wrong');
+        }
+      };
 
       expect(parser.notifications.length).toEqual(0);
 

@@ -1,8 +1,9 @@
-function Scanner(regularExpression) {
+function Scanner(regularExpression, name) {
   this.regularExpression = regularExpression;
   this.counters = new Array();
-  if (arguments.length > 1){
-    for (var i = 1; i < arguments.length; i++){
+  this.name = name;
+  if (arguments.length > 2){
+    for (var i = 2; i < arguments.length; i++){
       this.counters.push(arguments[i]);
     }
   }

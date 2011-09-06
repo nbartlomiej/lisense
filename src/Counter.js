@@ -1,12 +1,19 @@
-function Counter(){
+function Counter(scanner){
   this.result = 0;
   this.name = 'counter';
   this.notifiers = new Array();
+  this.scanner = scanner;
+  scanner.counters.push(this);
 };
 Counter.prototype.callback = function(){
   this.result++;
 };
 Counter.prototype.callNotifiers = function(){
+  var that = this;
+  this.notifiers.forEach(function(notifier){
+    var path = that.scanner.name + '.' + that.name;
+    notifier.callback(path, that.result);
+  });
 };
 
 function MatchLettersCounter(){
@@ -15,4 +22,3 @@ function MatchLettersCounter(){
 MatchLettersCounter.prototype.callback = function(match){
   this.result.push(match.length);
 };
-

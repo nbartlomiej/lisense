@@ -16,6 +16,3 @@ Notifier.prototype.callback = function(from, value){
   if (this.dataTree[scanner] == undefined) {this.dataTree[scanner] = {}; }
   this.dataTree[scanner][property] = value;
 }
-
-function WordNotifier(){
-};

@@ -5,8 +5,8 @@ describe("Notifier", function(){
   });
   describe("constructor", function(){
     it('adds self to the notifiers array of each argument', function(){
-      var counter1 = new Counter();
-      var counter2 = new Counter();
+      var counter1 = new Counter({counters: new Array()});
+      var counter2 = new Counter({counters: new Array()});
       new Array(counter1, counter2).forEach(function(counter){
         spyOn(counter.notifiers, 'push');
       });

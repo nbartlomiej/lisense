@@ -1,11 +1,25 @@
 describe("Counter", function(){
   var counter;
   beforeEach(function(){
-    counter = new Counter();
+    var wordScanner = new Scanner(/\w/);
+    counter = new Counter(wordScanner);
+  });
+  describe("constructor", function(){
+    it('stores the first argument as the scanner variable', function(){
+      var argument = new Scanner();
+      var counter = new Counter(argument);
+      expect(counter.scanner).toEqual(argument);
+    });
+    it('adds self to the counters array of the argument', function(){
+      var scanner = new Scanner();
+      spyOn(scanner.counters, 'push');
+      var counter = new Counter(scanner);
+      expect(scanner.counters.push).toHaveBeenCalledWith(counter);
+    });
   });
   describe("name()", function(){
     it("equals 'counter'", function(){
-      expect((new Counter()).name).toEqual('counter');
+      expect(counter.name).toEqual('counter');
     });
   });
   describe("callback()", function(){
@@ -26,17 +40,27 @@ describe("Counter", function(){
   });
   describe("callNotifiers()", function(){
     it("browses through notifiers");
-    it("invokes 'callback' on each notifier with counter's result", function(){
-      var result = jasmine.createSpy();
-      counter.result = result;
-      var notifier1 = new Notifier();
-      spyOn(notifier1, 'callback');
-      var notifier2 = new Notifier();
-      spyOn(notifier2, 'callback');
-      counter.notifiers.push(notifier1, notifier2);
+    it("invokes 'callback' on each notifier", function(){
+      for(var i=0; i<4; i++){
+        var notifier = new Notifier();
+        spyOn(notifier, 'callback');
+        counter.notifiers.push(notifier);
+      }
       counter.callNotifiers();
-      expect(notifier1.callback).toHaveBeenCalledWith(result);
-      expect(notifier2.callback).toHaveBeenCalledWith(result);
+      counter.notifiers.forEach(function(n){ expect(n.callback).toHaveBeenCalled() });
+    });
+    it("'callback' is invoked with counter path and result", function(){
+      var scanner = new Scanner(/1/, 'one');
+      var notifier = new Notifier();
+      var counter = new Counter(scanner);
+
+      counter.name = 'two';
+      var result = counter.result = jasmine.createSpy('result');
+      spyOn(notifier, 'callback');
+
+      counter.notifiers.push(notifier);
+      counter.callNotifiers();
+      expect(notifier.callback).toHaveBeenCalledWith('one.two', result);
     });
   });
 });
