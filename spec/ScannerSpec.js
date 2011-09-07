@@ -17,13 +17,6 @@ describe("Scanner", function() {
       var scanner = new Scanner({scanners: new Array()}, regularExpression);
       expect(scanner.regularExpression).toEqual(regularExpression);
     });
-    it("puts third and more arguments into the counters array", function(){
-      var spyOne = jasmine.createSpy();
-      var spyTwo = jasmine.createSpy();
-      var scanner = new Scanner({scanners: new Array()}, /./, spyOne, spyTwo);
-      expect(scanner.counters[0]).toEqual(spyOne);
-      expect(scanner.counters[1]).toEqual(spyTwo);
-    });
   });
 
   describe("regularExpression", function(){
@@ -54,18 +47,28 @@ describe("Scanner", function() {
     });
     it ("calls each counter's callback with each regexp match", function(){
       var scanner = new Scanner({scanners: new Array()}, /a/);
-      scanner.counters.push({id: 1, callback: function(){}});
-      scanner.counters.push({id: 2, callback: function(){}});
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });
       scanner.parse('abc');
       scanner.counters.forEach(function(counter){
         expect(counter.callback).toHaveBeenCalledWith('a');
       });
     });
+    it ("calls each counter's callNotifiers()", function(){
+      var scanner = new Scanner({scanners: new Array()}, /a/);
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
+      scanner.counters.forEach(function(counter){ spyOn(counter, 'callNotifiers'); });
+      scanner.parse('abc');
+      scanner.counters.forEach(function(counter){
+        expect(counter.callNotifiers).toHaveBeenCalled();
+      });
+    });
     it ("doesn't invoke anything when regexp doesn't match", function(){
       var scanner = new Scanner({scanners: new Array()}, /d/);
-      scanner.counters.push({id: 1, callback: function(){}});
-      scanner.counters.push({id: 2, callback: function(){}});
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
+      scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });
       scanner.parse('abc');
       scanner.counters.forEach(function(counter){

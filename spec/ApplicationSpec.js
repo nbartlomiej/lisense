@@ -6,9 +6,8 @@ describe("Application", function(){
       var wordScanner = new Scanner(scannerGroup, /\w/);
       var wordCounter = new Counter(wordScanner);
 
-      function WordNotifier(){};
-      WordNotifier.prototype = new Notifier(wordCounter);
-      WordNotifier.prototype.evaluate = function(wordCount){
+      var wordNotifier = new Notifier(wordCounter);
+      wordNotifier.evaluate = function(wordCount){
         if (wordCount > 180){
           scannerGroup.notifications.push('something wrong');
         }

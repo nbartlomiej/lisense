@@ -2,12 +2,6 @@ function Scanner(scannerGroup, regularExpression) {
   scannerGroup.scanners.push(this);
   this.regularExpression = regularExpression;
   this.counters = new Array();
-  this.name = name;
-  if (arguments.length > 2){
-    for (var i = 2; i < arguments.length; i++){
-      this.counters.push(arguments[i]);
-    }
-  }
 }
 
 Scanner.prototype.parse = function(string) {
@@ -17,5 +11,8 @@ Scanner.prototype.parse = function(string) {
     that.counters.forEach(function(counter){
       counter.callback(match);
     });
+  });
+  this.counters.forEach(function(counter){
+    counter.callNotifiers();
   });
 };

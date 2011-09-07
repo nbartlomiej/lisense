@@ -3,3 +3,8 @@ function ScannerGroup(){
   this.scanners = new Array();
 };
 
+ScannerGroup.prototype.parse = function(text){
+  this.scanners.forEach(function(scanner){
+    scanner.parse(text);
+  });
+};

@@ -26,11 +26,9 @@ describe("Notifier", function(){
 
   describe("callback(from, value)", function(){
     it("stores the result in the temporaryResults array", function(){
-      var counter = new Counter({counters: new Array()});
-      var notifier = new Notifier(counter);
-      var value = jasmine.createSpy('value');
-      notifier.callback(counter, value);
-      expect(notifier.temporaryResults).toContain(value);
+      var value2 = jasmine.createSpy('value2');
+      notifier.callback(counter2, value2);
+      expect(notifier.temporaryResults).toContain(value2);
     });
     it("positions temporaryResults according to parameter ordering", function(){
       var value2 = jasmine.createSpy('value2');
@@ -49,6 +47,13 @@ describe("Notifier", function(){
       notifier.callback(counter1, value1);
       notifier.callback(counter2, value2);
       expect(notifier.evaluate).toHaveBeenCalledWith(value1, value2);
+    });
+    it("cleans temporaryResults when all parameters are present", function(){
+      var value1 = jasmine.createSpy('value1');
+      var value2 = jasmine.createSpy('value2');
+      notifier.callback(counter1, value1);
+      notifier.callback(counter2, value2);
+      expect(notifier.temporaryResults.length).toEqual(0);
     });
   });
 });
