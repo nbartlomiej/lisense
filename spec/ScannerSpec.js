@@ -11,15 +11,10 @@ describe("Scanner", function() {
       var scanner = new Scanner(regularExpression);
       expect(scanner.regularExpression).toEqual(regularExpression);
     });
-    it("stores the second argument as the scanner's name", function(){
-      var name = jasmine.createSpy('name');
-      var scanner = new Scanner(/regexp/, name);
-      expect(scanner.name).toEqual(name);
-    });
-    it("puts third and more arguments into the counters array", function(){
+    it("puts second and more arguments into the counters array", function(){
       var spyOne = jasmine.createSpy();
       var spyTwo = jasmine.createSpy();
-      var scanner = new Scanner(/./, 'scannerName', spyOne, spyTwo);
+      var scanner = new Scanner(/./, spyOne, spyTwo);
       expect(scanner.counters[0]).toEqual(spyOne);
       expect(scanner.counters[1]).toEqual(spyTwo);
     });
