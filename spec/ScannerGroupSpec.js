@@ -1,0 +1,2 @@
+describe("ScannerGroup", function(){
+});

@@ -2,19 +2,25 @@ describe("Scanner", function() {
   var scanner;
 
   beforeEach(function(){
-    scanner = new Scanner(/some_expression/);
+    scanner = new Scanner({scanners: new Array()}, /some_expression/);
   });
 
   describe("constructor", function(){
-    it("stores the first argument as regular expression", function(){
+    it("adds self to the scanners array of the first argument", function(){
+      var scannerGroup = new ScannerGroup();
+      spyOn(scannerGroup.scanners, 'push');
+      var scanner = new Scanner(scannerGroup, /\w/);
+      expect(scannerGroup.scanners.push).toHaveBeenCalledWith(scanner);
+    });
+    it("stores the second argument as regular expression", function(){
       regularExpression = jasmine.createSpy();
-      var scanner = new Scanner(regularExpression);
+      var scanner = new Scanner({scanners: new Array()}, regularExpression);
       expect(scanner.regularExpression).toEqual(regularExpression);
     });
-    it("puts second and more arguments into the counters array", function(){
+    it("puts third and more arguments into the counters array", function(){
       var spyOne = jasmine.createSpy();
       var spyTwo = jasmine.createSpy();
-      var scanner = new Scanner(/./, spyOne, spyTwo);
+      var scanner = new Scanner({scanners: new Array()}, /./, spyOne, spyTwo);
       expect(scanner.counters[0]).toEqual(spyOne);
       expect(scanner.counters[1]).toEqual(spyTwo);
     });
@@ -23,7 +29,7 @@ describe("Scanner", function() {
   describe("regularExpression", function(){
     it("is passed as a first constructor parameter", function(){
       var regularExpression = /some_expression/;
-      var scanner = new Scanner(regularExpression);
+      var scanner = new Scanner({scanners: new Array()}, regularExpression);
       expect(scanner.regularExpression).toEqual(regularExpression);
     });
     it("is a regular expression", function(){
@@ -40,14 +46,14 @@ describe("Scanner", function() {
   describe('parse()', function(){
     it ('applies regularExpression to the given string', function(){
       var regularExpression = /mock_regular_expression/;
-      var scanner = new Scanner(regularExpression);
+      var scanner = new Scanner({scanners: new Array()}, regularExpression);
       var string = jasmine.createSpy('string');
       spyOn(regularExpression, 'exec');
       scanner.parse(string);
       expect(regularExpression.exec).toHaveBeenCalledWith(string);
     });
     it ("calls each counter's callback with each regexp match", function(){
-      var scanner = new Scanner(/a/);
+      var scanner = new Scanner({scanners: new Array()}, /a/);
       scanner.counters.push({id: 1, callback: function(){}});
       scanner.counters.push({id: 2, callback: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });
@@ -57,7 +63,7 @@ describe("Scanner", function() {
       });
     });
     it ("doesn't invoke anything when regexp doesn't match", function(){
-      var scanner = new Scanner(/d/);
+      var scanner = new Scanner({scanners: new Array()}, /d/);
       scanner.counters.push({id: 1, callback: function(){}});
       scanner.counters.push({id: 2, callback: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });

@@ -1,17 +1,17 @@
 describe("Counter", function(){
   var counter;
   beforeEach(function(){
-    var wordScanner = new Scanner(/\w/);
+    var wordScanner = new Scanner({scanners: new Array()}, /\w/);
     counter = new Counter(wordScanner);
   });
   describe("constructor", function(){
     it('stores the first argument as the scanner variable', function(){
-      var argument = new Scanner();
+      var argument = new Scanner({scanners: new Array()});
       var counter = new Counter(argument);
       expect(counter.scanner).toEqual(argument);
     });
     it('adds self to the counters array of the argument', function(){
-      var scanner = new Scanner();
+      var scanner = new Scanner({scanners: new Array()});
       spyOn(scanner.counters, 'push');
       var counter = new Counter(scanner);
       expect(scanner.counters.push).toHaveBeenCalledWith(counter);
@@ -49,18 +49,16 @@ describe("Counter", function(){
       counter.callNotifiers();
       counter.notifiers.forEach(function(n){ expect(n.callback).toHaveBeenCalled() });
     });
-    it("'callback' is invoked with counter path and result", function(){
-      var scanner = new Scanner(/1/, 'one');
+    it("'callback' is invoked with counter and result", function(){
+      var scanner = new Scanner({scanners: new Array()}, /1/, 'one');
       var notifier = new Notifier();
       var counter = new Counter(scanner);
-
-      counter.name = 'two';
       var result = counter.result = jasmine.createSpy('result');
-      spyOn(notifier, 'callback');
-
       counter.notifiers.push(notifier);
+
+      spyOn(notifier, 'callback');
       counter.callNotifiers();
-      expect(notifier.callback).toHaveBeenCalledWith('one.two', result);
+      expect(notifier.callback).toHaveBeenCalledWith(counter, result);
     });
   });
 });

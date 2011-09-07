@@ -11,8 +11,7 @@ Counter.prototype.callback = function(){
 Counter.prototype.callNotifiers = function(){
   var that = this;
   this.notifiers.forEach(function(notifier){
-    var path = that.scanner.name + '.' + that.name;
-    notifier.callback(path, that.result);
+    notifier.callback(that, that.result);
   });
 };
 
