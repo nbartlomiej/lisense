@@ -4,13 +4,13 @@ describe("Application", function(){
       var parser = new Parser();
 
 
-      var wordScanner = new Scanner(/\w/, 'word');
+      var wordScanner = new Scanner(/\w/);
       var wordCounter = new Counter(wordScanner);
 
       function WordNotifier(){};
       WordNotifier.prototype = new Notifier(wordCounter);
-      WordNotifier.prototype.evaluate = function(){
-        if (this.dataTree.word.counter > 180){
+      WordNotifier.prototype.evaluate = function(wordCount){
+        if (wordCount > 180){
           parser.notifications.push('something wrong');
         }
       };
