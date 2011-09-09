@@ -1,15 +1,20 @@
-parser = new Parser();
+var scannerGroup = new ScannerGroup();
 
-wordScanner = new Scanner(/\w/, new Counter());
-wordNotifier = new WordNotifier(wordScanner);
+var wordScanner = new Scanner(scannerGroup, /\b\S+\b/g);
+var wordCounter = new Counter(wordScanner);
 
-parser.matchers.push( wordScanner);
-parser.notifiers.push( new WordNotifier(wordScanner) );
+var wordNotifier = new Notifier(wordCounter);
+wordNotifier.evaluate = function(wordCount){
+  if (wordCount > 10){
+    scannerGroup.notifications.push('something wrong');
+  }
+};
+
 
 var onLoad = function(){
   var licenseTextarea = document.getElementById('license');
   licenseTextarea.onkeyup = function(){
-    parser.parse(licenseTextarea.value);
+    scannerGroup.parse(licenseTextarea.value);
   };
 };
 

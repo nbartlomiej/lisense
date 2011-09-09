@@ -37,22 +37,25 @@ describe("Scanner", function() {
   });
 
   describe('parse()', function(){
-    it ('applies regularExpression to the given string', function(){
-      var regularExpression = /mock_regular_expression/;
-      var scanner = new Scanner({scanners: new Array()}, regularExpression);
-      var string = jasmine.createSpy('string');
-      spyOn(regularExpression, 'exec');
-      scanner.parse(string);
-      expect(regularExpression.exec).toHaveBeenCalledWith(string);
-    });
+    // Cannot spy on String.match();
+    //
+    // it ('applies regularExpression to the given string', function(){
+    //   var regularExpression = /sample regular expression/;
+    //   var scanner = new Scanner({scanners: new Array()}, regularExpression);
+    //   var string = 'sample string';
+    //   spyOn(string, 'match');
+    //   scanner.parse(string);
+    //   expect(string.match).toHaveBeenCalledWith(regularExpression);
+    // });
     it ("calls each counter's callback with each regexp match", function(){
-      var scanner = new Scanner({scanners: new Array()}, /a/);
+      var scanner = new Scanner({scanners: new Array()}, /three/g);
       scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });
-      scanner.parse('abc');
+      scanner.parse('one two three four three two one two three');
       scanner.counters.forEach(function(counter){
-        expect(counter.callback).toHaveBeenCalledWith('a');
+        expect(counter.callback).toHaveBeenCalledWith('three');
+        expect(counter.callback.callCount).toEqual(3);
       });
     });
     it ("calls each counter's callNotifiers()", function(){
@@ -66,11 +69,11 @@ describe("Scanner", function() {
       });
     });
     it ("doesn't invoke anything when regexp doesn't match", function(){
-      var scanner = new Scanner({scanners: new Array()}, /d/);
+      var scanner = new Scanner({scanners: new Array()}, /five/);
       scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.push({callback: function(){}, callNotifiers: function(){}});
       scanner.counters.forEach(function(counter){ spyOn(counter, 'callback'); });
-      scanner.parse('abc');
+      scanner.parse('one two three four');
       scanner.counters.forEach(function(counter){
         expect(counter.callback).wasNotCalled();
       });

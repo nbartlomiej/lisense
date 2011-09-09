@@ -39,7 +39,6 @@ describe("Counter", function(){
     });
   });
   describe("callNotifiers()", function(){
-    it("browses through notifiers");
     it("invokes 'callback' on each notifier", function(){
       for(var i=0; i<4; i++){
         var notifier = new Notifier();
@@ -59,6 +58,11 @@ describe("Counter", function(){
       spyOn(notifier, 'callback');
       counter.callNotifiers();
       expect(notifier.callback).toHaveBeenCalledWith(counter, result);
+    });
+    it("resets current result", function(){
+      counter.result = 10;
+      counter.callNotifiers();
+      expect(counter.result).toEqual(0);
     });
   });
 });

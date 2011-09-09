@@ -6,7 +6,7 @@ function Scanner(scannerGroup, regularExpression) {
 
 Scanner.prototype.parse = function(string) {
   var that = this;
-  var matches = this.regularExpression.exec(string);
+  var matches = string.match(this.regularExpression);
   matches && matches.forEach(function(match){
     that.counters.forEach(function(counter){
       counter.callback(match);

@@ -3,7 +3,7 @@ describe("Application", function(){
     it("allows standard application flow", function(){
       var scannerGroup = new ScannerGroup();
 
-      var wordScanner = new Scanner(scannerGroup, /\w/);
+      var wordScanner = new Scanner(scannerGroup, /\b\S+\b/g);
       var wordCounter = new Counter(wordScanner);
 
       var wordNotifier = new Notifier(wordCounter);

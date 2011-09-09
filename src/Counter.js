@@ -13,6 +13,7 @@ Counter.prototype.callNotifiers = function(){
   this.notifiers.forEach(function(notifier){
     notifier.callback(that, that.result);
   });
+  this.result = 0;
 };
 
 function MatchLettersCounter(){
