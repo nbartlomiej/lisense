@@ -73,8 +73,12 @@ h1 {
 
 .scores {
   margin: 0 10px;
-  padding: 0 10px;
 
+  /* initially - hidden */
+  display: none;
+}
+
+.score-description {
   background: rgb(242,245,246); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
@@ -99,26 +103,17 @@ h1 {
   text-shadow: 0px 1px 1px #f0f0f0;
   filter: dropshadow(color=#f0f0f0, offx=0, offy=1);
 
-  /* initially - hidden */
-  display: none;
-}
-
-.score-description {
-  margin-left: 10px;
-  margin-bottom: 5px;
-  margin-top: -5px;
+  padding-left: 15px;
+  padding-top: -5px;
   color: #000;
   font-family: 'Merienda One', cursive;
-  font-size: 43px;
+  font-size: 23px;
 }
 
 .score {
   font-size: 100px;
   font-weight: bold;
   text-align: right;
-  margin: 10px;
-  margin-top: -30px;
-  margin-bottom: 20px;
 }
 
 .notification {
