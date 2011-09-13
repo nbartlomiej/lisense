@@ -23,6 +23,7 @@ h1 {
 
 .dim a {
   color: #555;
+  text-decoration: none;
 }
 
 .main-column {
@@ -66,6 +67,10 @@ h1 {
   font-size: 1.2em;
 }
 
+.samples {
+  margin-bottom: 0px;
+}
+
 .scores {
   margin: 0 10px;
   padding: 0 10px;
@@ -93,6 +98,9 @@ h1 {
 
   text-shadow: 0px 1px 1px #f0f0f0;
   filter: dropshadow(color=#f0f0f0, offx=0, offy=1);
+
+  /* initially - hidden */
+  display: none;
 }
 
 .score-description {
@@ -127,6 +135,16 @@ h1 {
   -moz-border-radius:    20px 20px 20px 20px;
   -webkit-border-radius: 20px 20px 20px 20px;
 
+}
+
+.notification-score {
+  text-align: left;
+  font-family: sans-serif;
+  font-size: 10px;
+  margin-top: -25px;
+  margin-left: 460px;
+  position: absolute;
+  color: #697053;
 }
 
 .good {

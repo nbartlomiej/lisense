@@ -7,4 +7,8 @@ ScannerGroup.prototype.parse = function(text){
   this.scanners.forEach(function(scanner){
     scanner.parse(text);
   });
+  this.updateView();
+};
+
+ScannerGroup.prototype.updateView = function(){
 };
