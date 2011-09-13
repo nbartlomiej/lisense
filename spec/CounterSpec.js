@@ -10,6 +10,20 @@ describe("Counter", function(){
       var counter = new Counter(argument);
       expect(counter.scanner).toEqual(argument);
     });
+    it('stores the second argument as the initializeResult variable', function(){
+      var argument = jasmine.createSpy('result');
+      var counter = new Counter(new Scanner({scanners: new Array()}), argument);
+      expect(counter.initializeResult).toEqual(argument);
+    });
+    it('sets initializeResult if no second argument given', function(){
+      var counter = new Counter(new Scanner({scanners: new Array()}));
+      expect(counter.initializeResult).toBeDefined();
+    });
+    it('calls initializeResult variable', function(){
+      var argument = jasmine.createSpy('result');
+      var counter = new Counter(new Scanner({scanners: new Array()}), argument);
+      expect(argument).toHaveBeenCalled();
+    });
     it('adds self to the counters array of the argument', function(){
       var scanner = new Scanner({scanners: new Array()});
       spyOn(scanner.counters, 'push');
@@ -59,10 +73,10 @@ describe("Counter", function(){
       counter.callNotifiers();
       expect(notifier.callback).toHaveBeenCalledWith(counter, result);
     });
-    it("resets current result", function(){
-      counter.result = 10;
+    it("invokes initializeResult", function(){
+      spyOn(counter, 'initializeResult');
       counter.callNotifiers();
-      expect(counter.result).toEqual(0);
+      expect(counter.initializeResult).toHaveBeenCalled();
     });
   });
 });

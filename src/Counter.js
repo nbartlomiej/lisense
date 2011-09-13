@@ -1,5 +1,12 @@
-function Counter(scanner){
-  this.result = 0;
+// TODO: refactor, make initializeResult return a variable and not modify
+// object variable
+function Counter(scanner, initializeResult){
+  if (initializeResult){
+    this.initializeResult = initializeResult;
+  } else {
+    this.initializeResult = function(){ this.result = 0; }
+  }
+  this.initializeResult();
   this.name = 'counter';
   this.notifiers = new Array();
   this.scanner = scanner;
@@ -13,7 +20,7 @@ Counter.prototype.callNotifiers = function(){
   this.notifiers.forEach(function(notifier){
     notifier.callback(that, that.result);
   });
-  this.result = 0;
+  this.initializeResult();
 };
 
 function MatchLettersCounter(){
