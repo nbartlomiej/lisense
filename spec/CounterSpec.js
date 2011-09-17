@@ -80,19 +80,3 @@ describe("Counter", function(){
     });
   });
 });
-
-describe("MatchLettersCounter", function(){
-  describe("callback(match)", function(){
-    it("adds the matches' length to the results array", function(){
-      var mlc = new MatchLettersCounter();
-      mlc.callback('12345');
-      expect(mlc.result[0]).toEqual(5);
-    });
-  });
-  describe("result", function(){
-    it("is an array", function(){
-      var mlc = new MatchLettersCounter();
-      expect(mlc.result).toBeArray();
-    });
-  });
-});
