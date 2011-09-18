@@ -9,6 +9,9 @@ beforeEach(function() {
       return true;
     },
     toBeArray: function() { return this.actual instanceof Array; },
+    toBeEmptyArray: function() {
+      return (this.actual instanceof Array) && (this.actual.length == 0);
+    },
     toBeRegExp: function() { return this.actual instanceof RegExp; }
   });
 });
