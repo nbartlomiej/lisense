@@ -45,3 +45,17 @@ LongestOccurrenceCounter.prototype.callback = function(match){
     this.result.length = this.maximumResultLength;
   }
 };
+
+function LongestUniqueOccurrenceCounter(scanner, maximumResultLength){
+  LongestOccurrenceCounter.call(this, scanner, maximumResultLength);
+};
+
+LongestUniqueOccurrenceCounter.prototype = new LongestOccurrenceCounter();
+
+LongestUniqueOccurrenceCounter.prototype.callback = function(match){
+  if (this.result.some(function(element){return element==match;})){
+    // doing nothing, the match is already present in the result array
+  } else {
+    LongestOccurrenceCounter.prototype.callback.call(this, match);
+  }
+};

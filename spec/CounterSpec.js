@@ -139,3 +139,27 @@ describe('LongestOccurrenceCounter', function(){
     });
   });
 });
+
+describe('LongestUniqueOccurrenceCounter', function(){
+  var longestUniqueOccurrenceCounter;
+  beforeEach(function(){
+    var wordScanner = new Scanner({scanners: new Array()}, /\b\S+\b/g);
+    longestUniqueOccurrenceCounter = new LongestUniqueOccurrenceCounter(wordScanner);
+  });
+  describe('callback()', function(){
+    it('calls LongestOccurrenceCounter when match not in result', function(){
+      var match = jasmine.createSpy();
+      longestUniqueOccurrenceCounter.result = new Array();
+      spyOn(LongestOccurrenceCounter.prototype, 'callback');
+      longestUniqueOccurrenceCounter.callback(match);
+      expect(LongestOccurrenceCounter.prototype.callback).toHaveBeenCalledWith(match);
+    });
+    it('doesn not call LongestOccurrenceCounter when match is in result', function(){
+      var match = jasmine.createSpy();
+      longestUniqueOccurrenceCounter.result = new Array(match);
+      spyOn(LongestOccurrenceCounter.prototype, 'callback');
+      longestUniqueOccurrenceCounter.callback(match);
+      expect(LongestOccurrenceCounter.prototype.callback).not.toHaveBeenCalled();
+    });
+  });
+});
