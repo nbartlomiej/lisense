@@ -24,19 +24,21 @@ describe("Counter", function(){
       var counter = new Counter(argument);
       expect(counter.scanner).toEqual(argument);
     });
-    it('stores the second argument as the initializeResult variable', function(){
+    it('stores the second argument as the initialResultFactory variable', function(){
       var argument = jasmine.createSpy('result');
       var counter = new Counter(new Scanner({scanners: new Array()}), argument);
-      expect(counter.initializeResult).toEqual(argument);
+      expect(counter.initialResultFactory).toEqual(argument);
     });
-    it('sets initializeResult if no second argument given', function(){
-      var counter = new Counter(new Scanner({scanners: new Array()}));
-      expect(counter.initializeResult).toBeDefined();
+    it('sets result to the initialResultFactory() value', function(){
+      var initialResultFactoryValue = jasmine.createSpy('initialResultFactoryValue');
+      var counter = new Counter(
+        new Scanner({scanners: new Array()}),
+        function(){ return initialResultFactoryValue; }
+      );
+      expect(counter.result).toEqual(initialResultFactoryValue);
     });
-    it('calls initializeResult variable', function(){
-      var argument = jasmine.createSpy('result');
-      var counter = new Counter(new Scanner({scanners: new Array()}), argument);
-      expect(argument).toHaveBeenCalled();
+    it('initialResultFactory() returns zero if no second argument given', function(){
+      expect(counter.initialResultFactory()).toEqual(0);
     });
     it('adds self to the counters array of the argument', function(){
       var scanner = new Scanner({scanners: new Array()});
@@ -72,10 +74,11 @@ describe("Counter", function(){
       counter.callNotifiers();
       expect(notifier.callback).toHaveBeenCalledWith(counter, result);
     });
-    it("invokes initializeResult", function(){
-      spyOn(counter, 'initializeResult');
+    it("assigns initialResultFactory value to result", function(){
+      var initialResultFactoryValue = jasmine.createSpy('initialResultFactoryValue');
+      spyOn(counter, 'initialResultFactory').andReturn(initialResultFactoryValue);
       counter.callNotifiers();
-      expect(counter.initializeResult).toHaveBeenCalled();
+      expect(counter.result).toEqual(initialResultFactoryValue);
     });
   });
 });

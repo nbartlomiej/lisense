@@ -1,12 +1,10 @@
-// TODO: refactor, make initializeResult return a variable and not modify
-// object variable
-function Counter(scanner, initializeResult){
-  if (initializeResult){
-    this.initializeResult = initializeResult;
+function Counter(scanner, initialResultFactory){
+  if (initialResultFactory){
+    this.initialResultFactory = initialResultFactory;
   } else {
-    this.initializeResult = function(){ this.result = 0; }
+    this.initialResultFactory = function(){ return 0; };
   }
-  this.initializeResult();
+  this.result = this.initialResultFactory();
   this.notifiers = new Array();
   if (scanner){
     this.scanner = scanner;
@@ -21,12 +19,12 @@ Counter.prototype.callNotifiers = function(){
   this.notifiers.forEach(function(notifier){
     notifier.callback(that, that.result);
   });
-  this.initializeResult();
+  this.result = this.initialResultFactory();
 };
 
 
 function LongestOccurrenceCounter(scanner, maximumResultLength){
-  Counter.call(this, scanner, function(){this.result = new Array()});
+  Counter.call(this, scanner, function(){ return new Array(); });
   if(maximumResultLength==undefined){
     this.maximumResultLength = 1;
   } else {
