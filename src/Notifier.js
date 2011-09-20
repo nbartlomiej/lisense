@@ -13,6 +13,7 @@ function Notifier(){
 };
 
 Notifier.prototype.callback = function(from, value){
+  // preparing array of sorted counters to pass on to the evaluate method
   var order = this.counters.indexOf(from);
   this.temporaryResults[order] = value;
   var results_length = 0;

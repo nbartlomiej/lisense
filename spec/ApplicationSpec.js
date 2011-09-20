@@ -1,6 +1,6 @@
 describe("Application", function(){
-  describe("creating new parser", function(){
-    it("allows standard application flow", function(){
+  describe("ScannerGroup flow", function(){
+    it("displays notifications through Scanner, Counter, Notifier", function(){
       var scannerGroup = new ScannerGroup();
 
       var wordScanner = new Scanner(scannerGroup, /\b\S+\b/g);
