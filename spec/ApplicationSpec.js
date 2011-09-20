@@ -20,5 +20,30 @@ describe("Application", function(){
 
       expect(scannerGroup.notifications.length).toEqual(1);
     });
+    it("displays notifications through Scanner, LongestOccurrenceCounter, Notifier", function(){
+      var scannerGroup = new ScannerGroup();
+
+      var wordScanner = new Scanner(scannerGroup, /\b\S+\b/g);
+      var threeLongestWords = new LongestOccurrenceCounter(wordScanner, 3);
+
+      var wordNotifier = new Notifier(threeLongestWords);
+      wordNotifier.evaluate = function(threeLongestWords){
+        if (threeLongestWords.length == 3){
+          if (threeLongestWords[2].length > 5) {
+            scannerGroup.notifications.push('something wrong');
+          }
+        }
+      };
+
+      scannerGroup.parse('Two words.');
+
+      expect(scannerGroup.notifications.length).toEqual(0);
+      scannerGroup.parse('Qwerty qwerty qwert.');
+
+      expect(scannerGroup.notifications.length).toEqual(0);
+      scannerGroup.parse('Qwerty qwerty qwerty.');
+
+      expect(scannerGroup.notifications.length).toEqual(1);
+    });
   });
 });
