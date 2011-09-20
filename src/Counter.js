@@ -8,8 +8,10 @@ function Counter(scanner, initializeResult){
   }
   this.initializeResult();
   this.initializeCounter();
-  this.scanner = scanner;
-  scanner.counters.push(this);
+  if (scanner){
+    this.scanner = scanner;
+    scanner.counters.push(this);
+  }
 };
 Counter.prototype.initializeCounter = function(){
   this.notifiers = new Array();
@@ -25,25 +27,26 @@ Counter.prototype.callNotifiers = function(){
   this.initializeResult();
 };
 
-function LongestOccurrenceCounter(scanner, resultsLength){
-  if(resultsLength==undefined){
-    this.resultsLength = 1;
+
+function LongestOccurrenceCounter(scanner, maximumResultLength){
+  Counter.call(this, scanner, function(){this.result = new Array()});
+  if(maximumResultLength==undefined){
+    this.maximumResultLength = 1;
   } else {
-    this.resultsLength = resultsLength;
+    this.maximumResultLength = maximumResultLength;
   }
-  this.prototype = new Counter(scanner);
-  Counter.prototype.initializeCounter.apply(this);
-  this.results = new Array();
 };
 
+LongestOccurrenceCounter.prototype = new Counter();
+
 LongestOccurrenceCounter.prototype.callback = function(match){
-  if (this.results.length < this.resultsLength){
-    this.results.push(match);
-  } else if (this.results[this.results.length-1].length < match.length) {
-    this.results.push(match);
-    this.results.sort(function(a,b){
+  if (this.result.length < this.maximumResultLength){
+    this.result.push(match);
+  } else if (this.result[this.result.length-1].length < match.length) {
+    this.result.push(match);
+    this.result.sort(function(a,b){
       return b.length - a.length;
     });
-    this.results.length = this.resultsLength;
+    this.result.length = this.maximumResultLength;
   }
 };
