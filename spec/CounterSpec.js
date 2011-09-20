@@ -4,16 +4,14 @@ describe("Counter", function(){
     var wordScanner = new Scanner({scanners: new Array()}, /\b\S+\b/g);
     counter = new Counter(wordScanner);
   });
-  describe('initializeCounter()', function(){
-    it('initializes notifiers with empty array', function(){
-      var object = {};
-      Counter.prototype.initializeCounter.apply(object);
-      expect(object.notifiers).toBeEmptyArray();
-    });
-  });
   describe("result", function(){
     it("is initialized with zero", function(){
       expect(counter.result).toEqual(0);
+    });
+  });
+  describe("notifiers", function(){
+    it("is initialized with empty array", function(){
+      expect(counter.notifiers).toBeEmptyArray();
     });
   });
   describe("constructor", function(){
@@ -45,12 +43,6 @@ describe("Counter", function(){
       spyOn(scanner.counters, 'push');
       var counter = new Counter(scanner);
       expect(scanner.counters.push).toHaveBeenCalledWith(counter);
-    });
-    it('invokes Counter.initializeCounter()', function(){
-      spyOn(Counter.prototype, 'initializeCounter');
-      var scanner = new Scanner({scanners: new Array()});
-      var counter = new Counter(scanner);
-      expect(Counter.prototype.initializeCounter).toHaveBeenCalled();
     });
   });
   describe("callback()", function(){

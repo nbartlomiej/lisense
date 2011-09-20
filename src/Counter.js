@@ -7,14 +7,11 @@ function Counter(scanner, initializeResult){
     this.initializeResult = function(){ this.result = 0; }
   }
   this.initializeResult();
-  this.initializeCounter();
+  this.notifiers = new Array();
   if (scanner){
     this.scanner = scanner;
     scanner.counters.push(this);
   }
-};
-Counter.prototype.initializeCounter = function(){
-  this.notifiers = new Array();
 };
 Counter.prototype.callback = function(){
   this.result++;
