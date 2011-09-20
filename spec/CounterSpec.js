@@ -83,7 +83,7 @@ describe("Counter", function(){
   });
 });
 
-describe('longestOccurrenceCounter', function(){
+describe('LongestOccurrenceCounter', function(){
   var longestOccurrenceCounter;
   beforeEach(function(){
     var wordScanner = new Scanner({scanners: new Array()}, /\b\S+\b/g);
