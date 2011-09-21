@@ -1,3 +1,8 @@
+//TODO: add escaping to string's prototype (?)
+esc = function(string){
+  return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+};
+
 var scannerGroup = new ScannerGroup();
 scannerGroup.updateView = function(){
   var scoresElement = document.getElementById('scores');
@@ -101,12 +106,12 @@ sentenceLengthNotifier.evaluate = function(fourLongestSentences){
     if (sentence.length > 1000){
       var score = sentence.length  * (-10 / 500);
       var notification = new Notification(score);
-      notification.description = "Mammoth-sized sentence found: \"" + sentence.substring(0,100)+"...\" (" + sentence.length + " characters).";
+      notification.description = "Mammoth-sized sentence found: \"" + esc(sentence.substring(0,100))+"...\" (" + sentence.length + " characters).";
       scannerGroup.notifications.push(notification);
     } else if (sentence.length > 500){
       var score = sentence.length  * (-10 / 500);
       var notification = new Notification(score);
-      notification.description = "The following sentence: \"" + sentence.substring(0,100)+"...\" is too long (" + sentence.length + " characters)."
+      notification.description = "The following sentence: \"" + esc(sentence.substring(0,100))+"...\" is too long (" + sentence.length + " characters)."
       scannerGroup.notifications.push(notification);
     }
   });
@@ -119,7 +124,7 @@ wordLengthNotifier.evaluate = function(tenLongestWords){
       var score = 0;
       tenLongestWords.forEach(function(word){score += (word.length-13)*(-1.2);});
       var notification = new Notification(score);
-      notification.description = 'Multiple long words: ' + tenLongestWords.join(', ') + '.';
+      notification.description = 'Multiple long words: ' + esc(tenLongestWords.join(', ')) + '.';
       scannerGroup.notifications.push(notification);
     }
   }

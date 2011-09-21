@@ -120,7 +120,8 @@ h1 {
   background: #fff;
   padding: 10px 15px;
   margin: 10px;
-  text-align: justify;
+  text-align: left;
+  overflow: hidden;
 
   -webkit-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow:    0px 1px 5px 1px rgba(0, 0, 0, 0.2);
