@@ -171,14 +171,21 @@ describe('LongestUniqueOccurrenceCounter', function(){
   });
   describe('processMatch()', function(){
     it('calls LongestOccurrenceCounter when match not in result', function(){
-      var match = jasmine.createSpy();
+      var match = 'sample_match';
       longestUniqueOccurrenceCounter.result = new Array();
       spyOn(LongestOccurrenceCounter.prototype, 'processMatch');
       longestUniqueOccurrenceCounter.processMatch(match);
       expect(LongestOccurrenceCounter.prototype.processMatch).toHaveBeenCalledWith(match);
     });
-    it('doesn not call LongestOccurrenceCounter when match is in result', function(){
-      var match = jasmine.createSpy();
+    it('converts match to lowercase before calling LongestOccurrenceCounter', function(){
+      var match = 'saMplE_mATch';
+      longestUniqueOccurrenceCounter.result = new Array();
+      spyOn(LongestOccurrenceCounter.prototype, 'processMatch');
+      longestUniqueOccurrenceCounter.processMatch(match);
+      expect(LongestOccurrenceCounter.prototype.processMatch).toHaveBeenCalledWith('sample_match');
+    });
+    it('does not call LongestOccurrenceCounter when match is in result', function(){
+      var match = 'sample_match';
       longestUniqueOccurrenceCounter.result = new Array(match);
       spyOn(LongestOccurrenceCounter.prototype, 'processMatch');
       longestUniqueOccurrenceCounter.processMatch(match);

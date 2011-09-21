@@ -62,6 +62,7 @@ function LongestUniqueOccurrenceCounter(scanner, maximumResultLength){
 LongestUniqueOccurrenceCounter.prototype = new LongestOccurrenceCounter();
 
 LongestUniqueOccurrenceCounter.prototype.processMatch = function(match){
+  match = match.toLowerCase();
   if (this.result.some(function(element){return element==match;})){
     // doing nothing, the match is already present in the result array
   } else {
