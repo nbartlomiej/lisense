@@ -59,6 +59,16 @@ describe("Counter", function(){
       counter.callback('sample_word');
       expect(counter.processMatch).toHaveBeenCalledWith('sample_word');
     });
+    it("doesn't call processMatch() if match caught by ignorePatterns", function(){
+      counter.ignorePatterns = new Array(/zero/, /two/);
+      spyOn(counter, 'processMatch');
+      counter.callback('one');
+      counter.callback('two');
+      counter.callback('three');
+      expect(counter.processMatch).not.toHaveBeenCalledWith('two');
+      expect(counter.processMatch).toHaveBeenCalledWith('one');
+      expect(counter.processMatch).toHaveBeenCalledWith('three');
+    });
   });
   describe("processMatch()", function(){
     it("increments result by one", function(){

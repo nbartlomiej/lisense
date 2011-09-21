@@ -12,8 +12,13 @@ function Counter(scanner, initialResultFactory){
     scanner.counters.push(this);
   }
 };
-Counter.prototype.callback = function(match){
-  this.processMatch(match);
+Counter.prototype.callback = function(string){
+  if (this.ignorePatterns.some(function(pattern){ return string.match(pattern);})){
+    // There exists a pattern that matches our string, therefore we're ignoring
+    // this string.
+  } else {
+    this.processMatch(string);
+  }
 };
 Counter.prototype.processMatch = function(match){
   this.result++;
