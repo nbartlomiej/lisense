@@ -6,12 +6,16 @@ function Counter(scanner, initialResultFactory){
   }
   this.result = this.initialResultFactory();
   this.notifiers = new Array();
+  this.ignorePatterns = new Array();
   if (scanner){
     this.scanner = scanner;
     scanner.counters.push(this);
   }
 };
-Counter.prototype.callback = function(){
+Counter.prototype.callback = function(match){
+  this.processMatch(match);
+};
+Counter.prototype.processMatch = function(match){
   this.result++;
 };
 Counter.prototype.callNotifiers = function(){
@@ -34,7 +38,7 @@ function LongestOccurrenceCounter(scanner, maximumResultLength){
 
 LongestOccurrenceCounter.prototype = new Counter();
 
-LongestOccurrenceCounter.prototype.callback = function(match){
+LongestOccurrenceCounter.prototype.processMatch = function(match){
   if (this.result.length < this.maximumResultLength){
     this.result.push(match);
   } else if (this.result[this.result.length-1].length < match.length) {
@@ -52,10 +56,10 @@ function LongestUniqueOccurrenceCounter(scanner, maximumResultLength){
 
 LongestUniqueOccurrenceCounter.prototype = new LongestOccurrenceCounter();
 
-LongestUniqueOccurrenceCounter.prototype.callback = function(match){
+LongestUniqueOccurrenceCounter.prototype.processMatch = function(match){
   if (this.result.some(function(element){return element==match;})){
     // doing nothing, the match is already present in the result array
   } else {
-    LongestOccurrenceCounter.prototype.callback.call(this, match);
+    LongestOccurrenceCounter.prototype.processMatch.call(this, match);
   }
 };

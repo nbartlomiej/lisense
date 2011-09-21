@@ -14,6 +14,11 @@ describe("Counter", function(){
       expect(counter.notifiers).toBeEmptyArray();
     });
   });
+  describe('ignorePatterns', function(){
+    it("is initialized with empty array", function(){
+      expect(counter.ignorePatterns).toBeEmptyArray();
+    });
+  });
   describe("constructor", function(){
     it('can be called without parameters', function(){
       // TODO: convert to expectation not to throw any exceptions
@@ -48,8 +53,16 @@ describe("Counter", function(){
     });
   });
   describe("callback()", function(){
+    it("calls processMatch() if match not caught by ignorePatterns", function(){
+      counter.ignorePatterns = new Array();
+      spyOn(counter, 'processMatch');
+      counter.callback('sample_word');
+      expect(counter.processMatch).toHaveBeenCalledWith('sample_word');
+    });
+  });
+  describe("processMatch()", function(){
     it("increments result by one", function(){
-      counter.callback();
+      counter.processMatch();
       expect(counter.result).toEqual(1);
     });
   });
@@ -63,7 +76,7 @@ describe("Counter", function(){
       counter.callNotifiers();
       counter.notifiers.forEach(function(n){ expect(n.callback).toHaveBeenCalled() });
     });
-    it("'callback' is invoked with counter and result", function(){
+    it("notifier's 'callback' is invoked with counter and result", function(){
       var scanner = new Scanner({scanners: new Array()}, /1/, 'one');
       var notifier = new Notifier();
       var counter = new Counter(scanner);
@@ -105,35 +118,35 @@ describe('LongestOccurrenceCounter', function(){
       expect(longestOccurrenceCounter.maximumResultLength).toEqual(1);
     });
   });
-  describe("callback(match)", function(){
+  describe("processMatch(match)", function(){
     it('puts match into result if result array is empty', function(){
       longestOccurrenceCounter.result = new Array();
       var match = jasmine.createSpy('match');
-      longestOccurrenceCounter.callback(match);
+      longestOccurrenceCounter.processMatch(match);
       expect(longestOccurrenceCounter.result).toContain(match);
     });
     it('puts match into result if lesser results than maximumResultLength', function(){
       longestOccurrenceCounter.maximumResultLength = 5;
       longestOccurrenceCounter.result = new Array('a', 'b', 'c', 'd');
-      longestOccurrenceCounter.callback('match');
+      longestOccurrenceCounter.processMatch('match');
       expect(longestOccurrenceCounter.result.length).toEqual(5);
     });
     it("puts match into result if it's longer than last result", function(){
       longestOccurrenceCounter.maximumResultLength = 3;
       longestOccurrenceCounter.result = new Array('1234', '123', '1');
-      longestOccurrenceCounter.callback('22');
+      longestOccurrenceCounter.processMatch('22');
       expect(longestOccurrenceCounter.result).toContain('22');
     });
     it("ignores matches that are not longer than last result", function(){
       longestOccurrenceCounter.maximumResultLength = 3;
       longestOccurrenceCounter.result = new Array('1234', '123', '12');
-      longestOccurrenceCounter.callback('22');
+      longestOccurrenceCounter.processMatch('22');
       expect(longestOccurrenceCounter.result).not.toContain('22');
     });
     it('sorts result and trims length to equal maximumResultLength', function(){
       longestOccurrenceCounter.maximumResultLength = 3;
       longestOccurrenceCounter.result = new Array('12345', '123', '12');
-      longestOccurrenceCounter.callback('1234');
+      longestOccurrenceCounter.processMatch('1234');
       var sortedTrimmedArray = new Array('12345', '1234', '123');
       expect(longestOccurrenceCounter.result).toEqual(sortedTrimmedArray);
     });
@@ -146,20 +159,20 @@ describe('LongestUniqueOccurrenceCounter', function(){
     var wordScanner = new Scanner({scanners: new Array()}, /\b\S+\b/g);
     longestUniqueOccurrenceCounter = new LongestUniqueOccurrenceCounter(wordScanner);
   });
-  describe('callback()', function(){
+  describe('processMatch()', function(){
     it('calls LongestOccurrenceCounter when match not in result', function(){
       var match = jasmine.createSpy();
       longestUniqueOccurrenceCounter.result = new Array();
-      spyOn(LongestOccurrenceCounter.prototype, 'callback');
-      longestUniqueOccurrenceCounter.callback(match);
-      expect(LongestOccurrenceCounter.prototype.callback).toHaveBeenCalledWith(match);
+      spyOn(LongestOccurrenceCounter.prototype, 'processMatch');
+      longestUniqueOccurrenceCounter.processMatch(match);
+      expect(LongestOccurrenceCounter.prototype.processMatch).toHaveBeenCalledWith(match);
     });
     it('doesn not call LongestOccurrenceCounter when match is in result', function(){
       var match = jasmine.createSpy();
       longestUniqueOccurrenceCounter.result = new Array(match);
-      spyOn(LongestOccurrenceCounter.prototype, 'callback');
-      longestUniqueOccurrenceCounter.callback(match);
-      expect(LongestOccurrenceCounter.prototype.callback).not.toHaveBeenCalled();
+      spyOn(LongestOccurrenceCounter.prototype, 'processMatch');
+      longestUniqueOccurrenceCounter.processMatch(match);
+      expect(LongestOccurrenceCounter.prototype.processMatch).not.toHaveBeenCalled();
     });
   });
 });
