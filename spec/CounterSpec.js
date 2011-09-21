@@ -153,6 +153,13 @@ describe('LongestOccurrenceCounter', function(){
       longestOccurrenceCounter.processMatch('22');
       expect(longestOccurrenceCounter.result).not.toContain('22');
     });
+    it('sorts result', function(){
+      longestOccurrenceCounter.maximumResultLength = 4;
+      longestOccurrenceCounter.result = new Array('12345', '12', '123');
+      longestOccurrenceCounter.processMatch('1234');
+      var sortedArray = new Array('12345', '1234', '123', '12');
+      expect(longestOccurrenceCounter.result).toEqual(sortedArray);
+    });
     it('sorts result and trims length to equal maximumResultLength', function(){
       longestOccurrenceCounter.maximumResultLength = 3;
       longestOccurrenceCounter.result = new Array('12345', '123', '12');
