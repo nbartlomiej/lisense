@@ -32,30 +32,14 @@ var wordCounter = new Counter(wordScanner);
 var characterScanner = new Scanner(scannerGroup, /\w/g);
 var characterCounter = new Counter(characterScanner);
 
-var sentenceScanner = new Scanner(scannerGroup, /[^.!?\s][^.!?]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g);
+var sentenceScanner = new Scanner(scannerGroup, /[^.!?\s][^.!?\n]*(?:[.!?](?!['"]?\s|$)[^.!?]*)*[.!?]?['"]?(?=\s|$)/g);
 var sentenceCounter = new Counter(sentenceScanner);
 
-// TODO: extract to longestOccurrencesCounter
-var fiveLongestSentences = new Counter(sentenceScanner, function(){this.result = new Array();} );
-fiveLongestSentences.callback = function(sentence){
-  if (this.result.length >= 5){
-    // if the last of the five longest sentences is shorter than currently
-    // processed sentence
-    if (this.result[this.result.length-1].length < sentence.length){
-      // add the sentence to the results array
-      this.result.push(sentence);
-    }
-  } else {
-    this.result.push(sentence);
-  }
-  // sort the results array by length
-  this.result.sort(function(a, b){
-    return (a.length - b.length)*(-1);
-  });
-  if (this.result.length > 5) {
-    this.result.length = 5;
-  }
-};
+var fourLongestSentences = new LongestOccurrenceCounter(sentenceScanner, 4);
+var tenLongestWords = new LongestUniqueOccurrenceCounter(wordScanner, 10);
+// When counting long words, ignore hyperlinks (http://link, www.link,
+// link.com), and alternations (e.g.: states/jurisdictions).
+tenLongestWords.ignorePatterns.push(/(http:\/\/)|(HTTP:\/\/)/g, /(www)|(WWW)/g, /\./g, /\//g);
 
 var hyperlinkScanner = new Scanner(scannerGroup, /http:\/\//g);
 var hyperlinkCounter = new Counter(hyperlinkScanner);
@@ -103,27 +87,42 @@ ariNotifier.evaluate = function(characterCount, wordCount, sentenceCount){
 var hyperlinkNotifier = new Notifier(hyperlinkCounter);
 hyperlinkNotifier.evaluate = function(hyperlinkCount){
   if (hyperlinkCount>0){
-    var notification = new Notification(hyperlinkCount*(-10) - 50);
-    notification.description = "Found hyperlinks, amount: " + hyperlinkCount + ". It's more difficult to read such text, especially on mobile devices or when using a printed version.";
+    var notification = new Notification(hyperlinkCount*(-9) - 50);
+    notification.description = "Found hyperlinks, amount: " + hyperlinkCount + ". It's more difficult to read such text, especially on mobile devices or when printed.";
     scannerGroup.notifications.push(notification);
   }
 };
 
 // TODO: convert to work on longest sentences by word count and not on longest
 // sentences by character count.
-var sentenceLengthNotifier = new Notifier(fiveLongestSentences);
-sentenceLengthNotifier.evaluate = function(fiveLongestSentences){
-  fiveLongestSentences.forEach(function(sentence){
+var sentenceLengthNotifier = new Notifier(fourLongestSentences);
+sentenceLengthNotifier.evaluate = function(fourLongestSentences){
+  fourLongestSentences.forEach(function(sentence){
     if (sentence.length > 1000){
-      var notification = new Notification(-20);
-      notification.description = "Mammoth-sized sentence found: \"" + sentence.substring(0,100)+"...\".";
+      var score = sentence.length  * (-10 / 500);
+      var notification = new Notification(score);
+      notification.description = "Mammoth-sized sentence found: \"" + sentence.substring(0,100)+"...\" (" + sentence.length + " characters).";
       scannerGroup.notifications.push(notification);
     } else if (sentence.length > 500){
-      var notification = new Notification(-10);
-      notification.description = "The following sentence: \"" + sentence.substring(0,100)+"...\" is too long, thus difficult to read.";
+      var score = sentence.length  * (-10 / 500);
+      var notification = new Notification(score);
+      notification.description = "The following sentence: \"" + sentence.substring(0,100)+"...\" is too long (" + sentence.length + " characters)."
       scannerGroup.notifications.push(notification);
     }
   });
+};
+
+var wordLengthNotifier = new Notifier(tenLongestWords);
+wordLengthNotifier.evaluate = function(tenLongestWords){
+  if (tenLongestWords.length > 0){
+    if (tenLongestWords[tenLongestWords.length - 1].length >= 14){
+      var score = 0;
+      tenLongestWords.forEach(function(word){score += (word.length-13)*(-1.2);});
+      var notification = new Notification(score);
+      notification.description = 'Multiple long words: ' + tenLongestWords.join(', ') + '.';
+      scannerGroup.notifications.push(notification);
+    }
+  }
 };
 
 
@@ -155,6 +154,6 @@ if(window.attachEvent) {
 
 function loadMitLicense(){
   var licenseTextarea = document.getElementById('license');
-  licenseTextarea.value = 'Copyright (C) <year> by <copyright holders>.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
+  licenseTextarea.value = 'Copyright (C) <year> by <copyright holders>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
   scannerGroup.parse(licenseTextarea.value);
 }
