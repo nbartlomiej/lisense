@@ -46,8 +46,14 @@ var tenLongestWords = new LongestUniqueOccurrenceCounter(wordScanner, 10);
 // link.com), and alternations (e.g.: states/jurisdictions).
 tenLongestWords.ignorePatterns.push(/(http:\/\/)|(HTTP:\/\/)/g, /(www)|(WWW)/g, /\./g, /\//g);
 
-var hyperlinkScanner = new Scanner(scannerGroup, /http:\/\//g);
-var hyperlinkCounter = new Counter(hyperlinkScanner);
+// Source: http://regexlib.com/REDetails.aspx?regexp_id=700 (attention, this
+// page has really poor UX :C ). Note: the regex does not detect links that
+// don't start with protocol name (e.g. yahoo.com). TODO: improve (?)
+var hyperlinkScanner = new Scanner(scannerGroup, /[a-zA-Z]{3,}:\/\/[a-zA-Z0-9\.]+\/*[a-zA-Z0-9\/\\%_.]*\?*[a-zA-Z0-9\/\\%_.=&]*/g);
+var hyperlinkCounter = new Counter(hyperlinkScanner, function(){return new Array()});
+hyperlinkCounter.processMatch = function(string){
+  this.result.push(string);
+};
 
 var wordNotifier = new Notifier(wordCounter);
 wordNotifier.evaluate = function(wordCount){
@@ -90,10 +96,28 @@ ariNotifier.evaluate = function(characterCount, wordCount, sentenceCount){
 // TODO: write a counter that passes the occurences from scanner to notifier;
 // list the hyperlink occurences in the notification description.
 var hyperlinkNotifier = new Notifier(hyperlinkCounter);
-hyperlinkNotifier.evaluate = function(hyperlinkCount){
-  if (hyperlinkCount>0){
-    var notification = new Notification(hyperlinkCount*(-9) - 50);
-    notification.description = "Found hyperlinks, amount: " + hyperlinkCount + ". It's more difficult to read such text, especially on mobile devices or when printed.";
+hyperlinkNotifier.evaluate = function(hyperlinks){
+  if (hyperlinks.length>0){
+    var score = 0;
+    var hyperlinkHash = {}
+    hyperlinks.forEach(function(hyperlink){
+      score += (-15) + (hyperlink.length * (-0.3));
+      if (hyperlinkHash[hyperlink]){
+        hyperlinkHash[hyperlink]++;
+      } else {
+        hyperlinkHash[hyperlink] = 1;
+      }
+    });
+    var aggregatedHyperlinks = new Array();
+    for (hyperlink in hyperlinkHash){
+      var d = "<a href='" + esc(hyperlink) + "' target='_blank'>"+esc(hyperlink)+"</a>";
+      if (hyperlinkHash[hyperlink] > 1){
+        d += " (x" + hyperlinkHash[hyperlink]+")";
+      }
+      aggregatedHyperlinks.push(d);
+    }
+    var notification = new Notification(score);
+    notification.description = "Found hyperlinks: " + aggregatedHyperlinks.join(', ') + ".";
     scannerGroup.notifications.push(notification);
   }
 };
