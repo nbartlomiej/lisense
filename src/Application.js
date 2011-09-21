@@ -49,7 +49,7 @@ tenLongestWords.ignorePatterns.push(/(http:\/\/)|(HTTP:\/\/)/g, /(www)|(WWW)/g, 
 // Source: http://regexlib.com/REDetails.aspx?regexp_id=700 (attention, this
 // page has really poor UX :C ). Note: the regex does not detect links that
 // don't start with protocol name (e.g. yahoo.com). TODO: improve (?)
-var hyperlinkScanner = new Scanner(scannerGroup, /[a-zA-Z]{3,}:\/\/[a-zA-Z0-9\.]+\/*[a-zA-Z0-9\/\\%_.]*\?*[a-zA-Z0-9\/\\%_.=&]*/g);
+var hyperlinkScanner = new Scanner(scannerGroup, /[a-zA-Z]{3,}:\/\/[a-zA-Z0-9\.]+\/*[a-zA-Z0-9\/\\%_.]*\?*[a-zA-Z0-9\/\\%_.=&]*[a-zA-Z0-9\/\\%_=&]/g);
 var hyperlinkCounter = new Counter(hyperlinkScanner, function(){return new Array()});
 hyperlinkCounter.processMatch = function(string){
   this.result.push(string);
