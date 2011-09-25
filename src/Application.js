@@ -9,10 +9,11 @@ scannerGroup.updateView = function(){
   if (scoresElement.style.display !='block') { scoresElement.style.display ='block'; }
   var globalScore = 0;
   var notificationsElement = document.getElementById('notifications');
+  var jQueryNotificationsElement = $('#notifications');
   notificationsElement.innerHTML = '';
   // sorting notifications from the most important one to the least
   this.notifications.sort(function(a, b){
-    return Math.abs(a.score) - Math.abs(b.score);
+    return Math.abs(b.score) - Math.abs(a.score);
   });
   // adding html to the site
   this.notifications.forEach(function(n){
@@ -22,7 +23,7 @@ scannerGroup.updateView = function(){
     var score = n.score.toFixed(0);
     if (score>=0) {score = '+' + score;}
     message += "<div class='notification-score'>"+score+"</div>";
-    notificationsElement.insertAdjacentHTML('afterbegin', message );
+    jQueryNotificationsElement.append(message);
   });
   var scoreElement = document.getElementById('score');
   // preventing -0 (minus zero) from being displayed as a score
