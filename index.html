@@ -1,22 +1,20 @@
+<!doctype html>
 <html>
   <head>
-    <!-- TODO: rewrite javascript files to CoffeeScript -->
-    <!-- TODO: merge javascript files into single script in production -->
-    <script type="text/javascript" src="src/Scanner.js"></script>
-    <script type="text/javascript" src="src/Counter.js"></script>
-    <script type="text/javascript" src="src/ScannerGroup.js"></script>
-    <script type="text/javascript" src="src/Notifier.js"></script>
-    <script type="text/javascript" src="src/Notification.js"></script>
-    <script type="text/javascript" src="src/Application.js"></script>
+    <script type="text/javascript" src="lib/modernizr-2.0.min.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="css/lisense.css" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print"> 
+    <link rel="shortcut icon" type='image/vnd.microsoft.icon' href="favicon.ico">
+    <link rel="icon" type="image/x-ico" href="favicon.ico">
     <!--[if lt IE 8]>
       <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
+
   </head>
   <body>
     <div class='container'>
@@ -44,5 +42,30 @@
         </div>
       </div>
     </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="lib/jquery-1.6.2.min.js"><\/script>')</script>
+
+    <!-- TODO: rewrite javascript files to CoffeeScript -->
+    <!-- TODO: merge javascript files into single script in production -->
+    <script type="text/javascript" src="src/Scanner.js"></script>
+    <script type="text/javascript" src="src/Counter.js"></script>
+    <script type="text/javascript" src="src/ScannerGroup.js"></script>
+    <script type="text/javascript" src="src/Notifier.js"></script>
+    <script type="text/javascript" src="src/Notification.js"></script>
+    <script type="text/javascript" src="src/Application.js"></script>
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-25933793-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
+
+    </script>
   </body>
 </html>
