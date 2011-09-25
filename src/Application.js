@@ -122,7 +122,7 @@ hyperlinkNotifier.evaluate = function(hyperlinks){
       aggregatedHyperlinks.push(d);
     }
     var notification = new Notification(score);
-    notification.description = "Found hyperlinks: " + aggregatedHyperlinks.join(', ') + ".";
+    notification.description = "Found hyperlinks, not friendly for print or mobile: " + aggregatedHyperlinks.join(', ') + ".";
     scannerGroup.notifications.push(notification);
   }
 };
