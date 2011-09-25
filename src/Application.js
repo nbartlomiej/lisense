@@ -5,8 +5,10 @@ esc = function(string){
 
 var scannerGroup = new ScannerGroup();
 scannerGroup.updateView = function(){
-  var scoresElement = document.getElementById('scores');
-  if (scoresElement.style.display !='block') { scoresElement.style.display ='block'; }
+  var scoresElement = $('#scores');
+  if (scoresElement.is(':hidden')) {
+    scoresElement.fadeIn( 500 );
+  }
   var globalScore = 0;
   var notificationsElement = document.getElementById('notifications');
   var jQueryNotificationsElement = $('#notifications');
@@ -18,11 +20,13 @@ scannerGroup.updateView = function(){
   // adding html to the site
   this.notifications.forEach(function(n){
     globalScore += n.score;
-    var message ="<div class='notification "+n.kind()+"'>";
+    var message ="<div><div class='notification "+n.kind()+"'>";
     message += n.description+"</div>";
     var score = n.score.toFixed(0);
     if (score>=0) {score = '+' + score;}
-    message += "<div class='notification-score'>"+score+"</div>";
+    message += "<div class='notification-score'>"+score+"</div></div>";
+    // TODO: create a jQuery animation for notifications, e.g.
+    // jQueryNotificationsElement.append(message).hide().fadeIn();
     jQueryNotificationsElement.append(message);
   });
   var scoreElement = document.getElementById('score');
@@ -159,7 +163,11 @@ wordLengthNotifier.evaluate = function(tenLongestWords){
 var onLoad = function(){
   var licenseTextarea = document.getElementById('license');
   licenseTextarea.onkeyup = function(){
-    scannerGroup.parse(licenseTextarea.value);
+    // TODO: move pastValue to scannerGroup class, implement lazy parsing there
+    if (scannerGroup.pastValue != licenseTextarea.value){
+      scannerGroup.parse(licenseTextarea.value);
+    }
+    scannerGroup.pastValue = licenseTextarea.value
   };
 };
 
@@ -186,4 +194,5 @@ function loadMitLicense(){
   var licenseTextarea = document.getElementById('license');
   licenseTextarea.value = 'Copyright (C) <year> by <copyright holders>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
   scannerGroup.parse(licenseTextarea.value);
+  scannerGroup.pastValue = licenseTextarea.value
 }
