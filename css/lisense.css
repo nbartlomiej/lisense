@@ -1,6 +1,9 @@
 /* Gradients taken from: http://www.colorzilla.com/gradient-editor/ . That's
  * one really cool CSS3 gradient generator! -nbartlomiej */
 
+html {
+  height: 100%;
+}
 
 body {
   background: #e4efc0; /* Old browsers */
@@ -11,6 +14,11 @@ body {
   background: -ms-linear-gradient(top, #e4efc0 0%,#abbd73 100%); /* IE10+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4efc0', endColorstr='#abbd73',GradientType=0 ); /* IE6-9 */
   background: linear-gradient(top, #e4efc0 0%,#abbd73 100%); /* W3C */
+
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 h1 {
