@@ -70,6 +70,44 @@ h1 {
   filter: dropshadow(color=#f0f0f0, offx=0, offy=1);
 }
 
+.todo a {
+  text-decoration: none;
+  color: #444;
+}
+
+.todo {
+  margin: 0px;
+  margin-top: 20px;
+  padding: 2px 12px;
+  text-align: justify;
+
+  background: #cdeb8e; /* Old browsers */
+  background: -moz-linear-gradient(top, #cdeb8e 0%, #a5c956 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdeb8e), color-stop(100%,#a5c956)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #cdeb8e 0%,#a5c956 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #cdeb8e 0%,#a5c956 100%); /* Opera11.10+ */
+  background: -ms-linear-gradient(top, #cdeb8e 0%,#a5c956 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, #cdeb8e 0%,#a5c956 100%); /* W3C */
+
+
+  font-size: 12px;
+  line-height: 120%;
+  border-radius:         20px 20px 20px 20px;
+  -moz-border-radius:    20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  border-left:   0px solid #fff;
+  border-right:  0px solid #fff;
+  border-top:    0px solid #fff;
+  border-bottom: 0px solid #fff;
+  -webkit-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow:    0px 1px 5px 1px rgba(0, 0, 0, 0.5);
+  box-shadow:         0px 1px 5px 1px rgba(0, 0, 0, 0.5);
+
+  font-weight: bold;
+
+}
+
 .text-shadow {
   text-shadow: 0px 1px 1px #f0f0f0;
   filter: dropshadow(color=#f0f0f0, offx=0, offy=1);
