@@ -70,14 +70,25 @@ h1 {
   filter: dropshadow(color=#f0f0f0, offx=0, offy=1);
 }
 
-.todo a {
+.show-newsletter {
+  padding: 10px;
+  text-align: center;
+}
+
+.show-newsletter a {
+  color: #575;
   text-decoration: none;
-  color: #444;
+}
+
+.show-newsletter a:hover {
+  text-decoration: underline;
+  color: #363;
 }
 
 .todo {
   margin: 0px;
   margin-top: 20px;
+  margin-bottom: 10px;
   padding: 2px 12px;
   text-align: justify;
 
@@ -105,7 +116,6 @@ h1 {
   box-shadow:         0px 1px 5px 1px rgba(0, 0, 0, 0.5);
 
   font-weight: bold;
-
 }
 
 .text-shadow {

@@ -38,10 +38,13 @@
           </div>
           </div>
         </div>
-      <div class='todo'>
+        <div class='show-newsletter'>
+          <a href='#' id='show-newsletter' onclick='$(".show-newsletter").hide();$("#todo").fadeIn()' >Hey Lisense, email me when new features are available.</a>
+        </div>
+      <div id='todo' class='todo' style='display:none'>
         <form action="http://twitter.us2.list-manage.com/subscribe/post?u=83cebfda4f1a0d435ece335b5&amp;id=730080c317" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form">
-            Be notified about updates, type email address: &nbsp;
-            <input type="email" style="width:110px; height: 16px; background: #fff; border: 1px solid #8a5;" value="" name="EMAIL" id="mce-EMAIL" /> &nbsp;
+            Be notified about updates, enter email address: &nbsp;
+            <input type="email" style="width:105px; height: 16px; background: #fff; border: 1px solid #8a5;" value="" name="EMAIL" id="mce-EMAIL" /> &nbsp;
             <input type="submit" value="Go!" name="subscribe" id="mc-embedded-subscribe" class="button">
           </form>
       </div>
