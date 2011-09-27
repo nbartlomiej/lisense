@@ -246,6 +246,10 @@ h1 {
   background: linear-gradient(top, #f1e767 0%,#feb645 100%); /* W3C */
 }
 
+.bad a {
+  color: #522;
+}
+
 .bad {
   border-top:    0px solid #c44;
   border-left:   1px solid #c44;
