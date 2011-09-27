@@ -34,12 +34,16 @@ h1 {
   text-decoration: none;
 }
 
+.dim a:hover {
+  text-decoration: underline;
+  color: #444;
+}
+
 .main-column {
   padding: 38px;
   padding-top: 5px;
   padding-bottom: 1px;
   text-align: justify;
-  background: #eee;
 
   background: #ffffff; /* Old browsers */
   background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
